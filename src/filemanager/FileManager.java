@@ -36,10 +36,16 @@ public class FileManager {
         
         File toFolder = new File(toPath);
         
+        
        
         if(toFolder.exists() && toFolder.isDirectory()){
             
             currentFolder = toFolder;
+            return true;
+        }
+        
+        if(toPath.equals("-p")){
+            currentFolder = currentFolder.getParentFile();
             return true;
         }
         
@@ -62,10 +68,7 @@ public class FileManager {
             return false;
         }
         
-        if(toPath.equals("-p")){
-            currentFolder = currentFolder.getParentFile();
-            return true;
-        }
+        
         System.out.println("Folder doesn't exists");
         return false;
     }
@@ -119,7 +122,7 @@ public class FileManager {
             }else{
                 System.out.println("Directory already exists");
             }
-        }else if(key.equals("-c")){
+        }else if(!key.equals("-f")){
             
             File newDir = new File(currentFolder.getAbsolutePath()+"/"+dirName);          
             
@@ -148,7 +151,7 @@ public class FileManager {
             }else{
                 System.out.println("File already exists");
             }
-        }else if(key.equals("-c")){
+        }else if(!key.equals("-f")){
             
             File newFile = new File(currentFolder.getAbsolutePath()+"/"+fileName);          
             
@@ -167,12 +170,32 @@ public class FileManager {
     }
     
     public void move(String sourcePath, String destPath){
-        Path from = Paths.get(sourcePath);
-        Path to = Paths.get(destPath);
-        try {
-            Files.move(from, to);
-        } catch (IOException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        Path from;
+        if(curPathContains(sourcePath)){
+            from = Paths.get(currentFolder + "/" + sourcePath);
+        }else{
+            from = Paths.get(sourcePath);
         }
+               
+        Path to = Paths.get(destPath+"/"+from.getFileName());
+        try{
+            Files.move(from,to);
+            System.out.println("File " + from.getFileName() + " succesfully moved to " + to);
+        }catch(IOException e){
+            System.out.println("Source or destination file doesn't exist");
+        }
+        
+        
+    }
+    
+    public boolean curPathContains(String toPath){
+        File[] files = currentFolder.listFiles();
+            for(File file: files){
+                
+                if(file.isDirectory() && toPath.equals(file.getName())){
+                    return true;
+                }
+            }
+        return false;
     }
 }

@@ -56,27 +56,50 @@ public class App {
                         break;
                         
                     case "newdir":
-                        if ((cmd.length > 2) && (cmd[1].equals("-c") || cmd[1].equals("-f"))){
-                            for(int i = 2; i < cmd.length; i++){
-                                fm.createDir(cmd[i], cmd[1]);
+                        if (cmd.length > 1){
+                            if(cmd[1].equals("-f")){
+                                for(int i = 2; i < cmd.length; i++){
+                                    fm.createDir(cmd[i], cmd[1]);
+                                }
+                            }else{
+                                for(int i = 1; i < cmd.length; i++){
+                                    fm.createDir(cmd[i], cmd[1]);
+                                }
                             }
+                            
                         }else{
                             System.out.println("Incorrect arguments, key existed");
                         }
+                        System.out.println("\n");
                         break;
                         
                     case "newfile":
-                        if ((cmd.length > 2) && (cmd[1].equals("-c") || cmd[1].equals("-f"))){
-                            for(int i = 2; i < cmd.length; i++){
-                                fm.createFile(cmd[i], cmd[1]);
+                        if (cmd.length > 1){
+                            if(cmd[1].equals("-f")){
+                                for(int i = 2; i < cmd.length; i++){
+                                    fm.createDir(cmd[i], cmd[1]);
+                                }
+                            }else{
+                                for(int i = 1; i < cmd.length; i++){
+                                    fm.createDir(cmd[i], cmd[1]);
+                                }
                             }
                         }else{
                             System.out.println("Incorrect arguments, key existed");
                         }
+                        System.out.println("\n");
                         break;
                         
                     case "move":
-                        fm.move(cmd[1], cmd[2]);
+                        
+                        int length = cmd.length;
+                        
+                        for(int i = 1; i < length-1; i++){
+                            fm.move(cmd[i], cmd[length-1]);
+                        }
+                        
+                        System.out.println("\n");
+                        break;
                         
                     case"quit":
                         break label;
